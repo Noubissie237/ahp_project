@@ -63,9 +63,9 @@ L'application sera accessible sur : [http://127.0.0.1:8000](http://127.0.0.1:800
 
 ## **📊 Utilisation**
 
-### **Mode Rapide**
+### **Mode Rapide (Exercice du cours)**
 1. Accédez à la page d'accueil.
-2. Cliquez sur **"Exercice du cours (Phone Chooser)"**.
+2. Cliquez sur **"Mode rapide"**.
 3. Consultez les résultats instantanés basés sur des données pré-définies.
 
 ### **Mode Personnalisé**

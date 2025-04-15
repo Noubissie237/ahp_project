@@ -1,81 +1,128 @@
-{% extends "../base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>Mode Personnalisé - Entrez vos données</h2>
-    </div>
-    <div class="card-body">
-        <form method="post">
-            {% csrf_token %}
-            
-            <div class="mb-4">
-                <h3>Critères</h3>
-                <div id="criteria-container">
-                    <div class="input-group mb-2">
-                        <input type="text" name="criteria" class="form-control" placeholder="Nom du critère" required>
-                        <button type="button" class="btn btn-outline-danger remove-criteria">Supprimer</button>
-                    </div>
-                </div>
-                <button type="button" id="add-criteria" class="btn btn-sm btn-secondary">Ajouter un critère</button>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-sliders me-2"></i>Mode Personnalisé - Configuration
+                </h2>
+                <p class="mb-0 small opacity-75">Définissez vos critères et alternatives</p>
             </div>
             
-            <div class="mb-4">
-                <h3>Alternatives</h3>
-                <div id="alternatives-container">
-                    <div class="input-group mb-2">
-                        <input type="text" name="alternatives" class="form-control" placeholder="Nom de l'alternative" required>
-                        <button type="button" class="btn btn-outline-danger remove-alternative">Supprimer</button>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="h5 text-primary">
+                                <i class="bi bi-bar-chart-line me-2"></i>Critères d'évaluation
+                            </h3>
+                            <button type="button" id="add-criteria" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-plus-circle me-1"></i>Ajouter
+                            </button>
+                        </div>
+                        
+                        <div id="criteria-container" class="mb-3">
+                            <div class="input-group mb-2">
+                                <input type="text" name="criteria" class="form-control" placeholder="Ex: Prix, Performance, Qualité" required>
+                                <button type="button" class="btn btn-outline-danger remove-criteria">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="small text-muted">Minimum 2 critères requis pour l'analyse AHP</p>
                     </div>
-                </div>
-                <button type="button" id="add-alternative" class="btn btn-sm btn-secondary">Ajouter une alternative</button>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="h5 text-primary">
+                                <i class="bi bi-list-check me-2"></i>Alternatives à comparer
+                            </h3>
+                            <button type="button" id="add-alternative" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-plus-circle me-1"></i>Ajouter
+                            </button>
+                        </div>
+                        
+                        <div id="alternatives-container" class="mb-3">
+                            <div class="input-group mb-2">
+                                <input type="text" name="alternatives" class="form-control" placeholder="Ex: Option A, Solution B" required>
+                                <button type="button" class="btn btn-outline-danger remove-alternative">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="small text-muted">Minimum 2 alternatives requis pour l'analyse</p>
+                    </div>
+                    
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary py-2">
+                            <i class="bi bi-arrow-right-circle me-2"></i>Passer aux comparaisons
+                        </button>
+                    </div>
+                </form>
             </div>
-            
-            <button type="submit" class="btn btn-primary">Continuer</button>
-        </form>
+        </div>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Ajouter un critère
-    document.getElementById('add-criteria').addEventListener('click', function() {
-        const container = document.getElementById('criteria-container');
+    function addField(containerId, placeholder, name) {
+        const container = document.getElementById(containerId);
+        const newIndex = container.querySelectorAll('.input-group').length;
+        
         const newInput = document.createElement('div');
         newInput.className = 'input-group mb-2';
         newInput.innerHTML = `
-            <input type="text" name="criteria" class="form-control" placeholder="Nom du critère" required>
-            <button type="button" class="btn btn-outline-danger remove-criteria">Supprimer</button>
+            <input type="text" name="${name}" class="form-control" placeholder="${placeholder}" required>
+            <button type="button" class="btn btn-outline-danger remove-item">
+                <i class="bi bi-trash"></i>
+            </button>
         `;
         container.appendChild(newInput);
-    });
-    
-    // Ajouter une alternative
-    document.getElementById('add-alternative').addEventListener('click', function() {
-        const container = document.getElementById('alternatives-container');
-        const newInput = document.createElement('div');
-        newInput.className = 'input-group mb-2';
-        newInput.innerHTML = `
-            <input type="text" name="alternatives" class="form-control" placeholder="Nom de l'alternative" required>
-            <button type="button" class="btn btn-outline-danger remove-alternative">Supprimer</button>
-        `;
-        container.appendChild(newInput);
-    });
-    
-    // Supprimer des éléments (délégué)
+    }
+
     document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('remove-criteria')) {
-            if (document.querySelectorAll('#criteria-container .input-group').length > 1) {
-                e.target.closest('.input-group').remove();
-            }
+        if (e.target.closest('#add-criteria')) {
+            addField('criteria-container', 'Nouveau critère', 'criteria');
         }
         
-        if (e.target.classList.contains('remove-alternative')) {
-            if (document.querySelectorAll('#alternatives-container .input-group').length > 1) {
+        if (e.target.closest('#add-alternative')) {
+            addField('alternatives-container', 'Nouvelle alternative', 'alternatives');
+        }
+        
+        if (e.target.closest('.remove-item')) {
+            const container = e.target.closest('.input-group').parentElement;
+            if (container.querySelectorAll('.input-group').length > 1) {
                 e.target.closest('.input-group').remove();
+            } else {
+                const input = e.target.closest('.input-group').querySelector('input');
+                input.value = '';
+                input.focus();
             }
         }
     });
 });
 </script>
+
+<style>
+.input-group {
+    transition: all 0.3s ease;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.remove-item {
+    transition: all 0.2s ease;
+}
+
+.remove-item:hover {
+    transform: scale(1.1);
+}
+</style>
 {% endblock %}
