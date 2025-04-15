@@ -1,0 +1,54 @@
+{% extends "../base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Résultats de l'analyse AHP</h2>
+    </div>
+    <div class="card-body">
+        <h3>Poids des critères</h3>
+        <ul class="list-group mb-4">
+            {% for crit, weight in results.criteria_weights.items %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ crit }}
+                <span class="badge bg-primary rounded-pill">{{ weight|floatformat:3 }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <div class="alert alert-info">
+            Ratio de cohérence: {{ results.consistency_ratio|floatformat:3 }}
+            {% if results.consistency_ratio > 0.1 %}
+                <span class="text-danger">(Attention: ratio élevé, les comparaisons peuvent être incohérentes)</span>
+            {% endif %}
+        </div>
+        
+        <h3>Classement des alternatives</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Alternative</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alt, score in results.ranked_alternatives %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ alt }}</td>
+                    <td>{{ score|floatformat:3 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="alert alert-success mt-4">
+            <h4>Meilleur choix: {{ results.best_choice.0 }}</h4>
+            <p>Score: {{ results.best_choice.1|floatformat:3 }}</p>
+        </div>
+        
+        <a href="{% url 'home' %}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</div>
+{% endblock %}

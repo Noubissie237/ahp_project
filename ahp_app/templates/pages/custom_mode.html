@@ -1,0 +1,81 @@
+{% extends "../base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Mode Personnalisé - Entrez vos données</h2>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <h3>Critères</h3>
+                <div id="criteria-container">
+                    <div class="input-group mb-2">
+                        <input type="text" name="criteria" class="form-control" placeholder="Nom du critère" required>
+                        <button type="button" class="btn btn-outline-danger remove-criteria">Supprimer</button>
+                    </div>
+                </div>
+                <button type="button" id="add-criteria" class="btn btn-sm btn-secondary">Ajouter un critère</button>
+            </div>
+            
+            <div class="mb-4">
+                <h3>Alternatives</h3>
+                <div id="alternatives-container">
+                    <div class="input-group mb-2">
+                        <input type="text" name="alternatives" class="form-control" placeholder="Nom de l'alternative" required>
+                        <button type="button" class="btn btn-outline-danger remove-alternative">Supprimer</button>
+                    </div>
+                </div>
+                <button type="button" id="add-alternative" class="btn btn-sm btn-secondary">Ajouter une alternative</button>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Continuer</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter un critère
+    document.getElementById('add-criteria').addEventListener('click', function() {
+        const container = document.getElementById('criteria-container');
+        const newInput = document.createElement('div');
+        newInput.className = 'input-group mb-2';
+        newInput.innerHTML = `
+            <input type="text" name="criteria" class="form-control" placeholder="Nom du critère" required>
+            <button type="button" class="btn btn-outline-danger remove-criteria">Supprimer</button>
+        `;
+        container.appendChild(newInput);
+    });
+    
+    // Ajouter une alternative
+    document.getElementById('add-alternative').addEventListener('click', function() {
+        const container = document.getElementById('alternatives-container');
+        const newInput = document.createElement('div');
+        newInput.className = 'input-group mb-2';
+        newInput.innerHTML = `
+            <input type="text" name="alternatives" class="form-control" placeholder="Nom de l'alternative" required>
+            <button type="button" class="btn btn-outline-danger remove-alternative">Supprimer</button>
+        `;
+        container.appendChild(newInput);
+    });
+    
+    // Supprimer des éléments (délégué)
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-criteria')) {
+            if (document.querySelectorAll('#criteria-container .input-group').length > 1) {
+                e.target.closest('.input-group').remove();
+            }
+        }
+        
+        if (e.target.classList.contains('remove-alternative')) {
+            if (document.querySelectorAll('#alternatives-container .input-group').length > 1) {
+                e.target.closest('.input-group').remove();
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

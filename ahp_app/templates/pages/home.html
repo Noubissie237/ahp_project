@@ -1,0 +1,13 @@
+{% extends "../base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h2>Que souhaitez-vous faire ?</h2>
+        <div class="d-grid gap-3 mt-4">
+            <a href="{% url 'quick_mode' %}" class="btn btn-primary btn-lg">Exercice du cours (Phone Chooser)</a>
+            <a href="{% url 'custom_mode' %}" class="btn btn-secondary btn-lg">Créer un AHP Personnalisé</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

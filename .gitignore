@@ -1,0 +1,48 @@
+# Environnements Virtuels
+venv/
+env/
+.env
+
+# Fichiers Python
+__pycache__/
+*.py[cod]
+
+# Fichiers de configuration de l'IDE
+.idea/
+*.sublime-project
+*.sublime-workspace
+.vscode/
+
+# Fichiers de logs
+*.log
+
+
+# Collectstatic
+/staticfiles/
+*.pot
+
+# Fichiers de cache
+*.pyc
+*.pyo
+*.pyd
+*.coverage
+*.cover
+
+# Dossiers de migration
+*/migrations/*
+!*/migrations/__init__.py
+
+# Fichiers de test
+.coverage
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+
+# Fichiers de cache Django
+.cache/
+
+# Autres fichiers/dossiers à ignorer
+*.DS_Store
+*.bak
+*.tmp

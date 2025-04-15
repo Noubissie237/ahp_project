@@ -1,0 +1,42 @@
+{% extends "../base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Évaluation des alternatives</h2>
+        <p>Pour chaque alternative, donnez un score pour chaque critère</p>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="matrix_id" value="{{ matrix_id }}">
+            
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Alternative</th>
+                        {% for crit in criteria %}
+                        <th>{{ crit }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alt in alternatives %}
+                    <tr>
+                        <td>{{ alt }}</td>
+                        {% for crit in criteria %}
+                        <td>
+                            <input type="number" name="score_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" 
+                                   class="form-control" step="0.1" min="0" required>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            
+            <button type="submit" class="btn btn-primary">Voir les résultats</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
