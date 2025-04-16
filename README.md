@@ -44,6 +44,10 @@ source .ahp_venv/bin/activate  # Linux/Mac
 ```bash
 pip install -r requirements.txt
 ```
+Si une erreur est levée, faire une installation manuelle
+```bash
+pip insatll Django==4.2 ; pip install numpy
+```
 
 ### **4. Migrer la base de données**
 ```bash
