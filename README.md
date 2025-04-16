@@ -2,7 +2,7 @@
 
 ---
 
-## **🌐 Aperçu du Projet**
+## **🌐 Aperçu du Projet (https://ahp.simpletraining.store)**
 **AHP System** est une application web Django qui utilise la méthode **Analytic Hierarchy Process (AHP)** pour aider les utilisateurs à choisir la meilleur option en fonction de leurs préférences personnelles, parmis une gamme de propositions.  
 
 L'application propose deux modes :
