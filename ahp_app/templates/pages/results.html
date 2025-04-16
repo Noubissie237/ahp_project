@@ -1,46 +1,92 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="card shadow border-0">
-            <div class="card-header bg-primary text-white py-3">
+    <div class="col-xl-10">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none"><i class="bi bi-house-door"></i> Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Résultats AHP</li>
+            </ol>
+        </nav>
+        
+        <!-- Results Card -->
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-gradient text-white py-4" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="h4 mb-0">
-                        <i class="bi bi-graph-up me-2"></i>Résultats de l'Analyse AHP
-                    </h2>
-                    <span class="badge bg-white text-primary">Décision optimale</span>
+                    <div>
+                        <h2 class="h3 mb-1 fw-bold text-success">
+                            <i class="bi bi-graph-up me-2 "></i>Résultats de l'Analyse AHP
+                        </h2>
+                        <p class="mb-0 opacity-75 text-success">Analyse complète de votre décision multicritère</p>
+                    </div>
+                    <span class="badge bg-white text-primary fw-semibold px-3 py-2 rounded-pill">
+                        <i class="bi bi-check-circle-fill me-1"></i>Décision optimale
+                    </span>
                 </div>
             </div>
             
-            <div class="card-body p-4">
+            <div class="card-body p-4 p-lg-5">
+                <!-- Best Choice Summary (Top) -->
+                <div class="card border-0 bg-gradient mb-5 shadow-sm" style="background: linear-gradient(40deg, rgba(6, 214, 160, 0.07) 0%, rgba(6, 214, 160, 0.15) 100%); border-radius: var(--border-radius);">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-auto d-none d-md-block">
+                                <div class="p-3 bg-success bg-opacity-10 rounded-circle text-center">
+                                    <i class="bi bi-trophy-fill text-success fs-1"></i>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h3 class="h4 mb-2 fw-bold text-success">
+                                    <i class="bi bi-trophy-fill me-2 d-md-none"></i>Recommandation Optimale
+                                </h3>
+                                <div class="d-flex align-items-center mb-2">
+                                    <h4 class="h5 fw-semibold mb-0">{{ results.best_choice.0 }}</h4>
+                                    <span class="badge bg-success ms-3">Score: {{ results.best_choice.1|floatformat:3 }}</span>
+                                </div>
+                                <p class="text-muted mb-0">Cette alternative présente le meilleur compromis selon l'importance relative de vos critères et les évaluations comparatives.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Criteria Weights Section -->
                 <div class="mb-5">
-                    <h3 class="h5 mb-3 text-primary">
-                        <i class="bi bi-bar-chart-line me-2"></i>Poids des Critères
-                    </h3>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="bg-primary text-white p-2 rounded-circle me-3">
+                            <i class="bi bi-bar-chart-line"></i>
+                        </span>
+                        <h3 class="h4 mb-0 fw-semibold">Poids des Critères</h3>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Critère</th>
-                                    <th class="text-end">Poids</th>
-                                    <th style="width: 60%">Importance relative</th>
+                            <thead>
+                                <tr class="table-light">
+                                    <th style="width: 30%">Critère</th>
+                                    <th class="text-end" style="width: 15%">Poids</th>
+                                    <th>Importance relative</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for crit, weight in results.criteria_weights.items %}
                                 <tr>
-                                    <td>{{ crit }}</td>
+                                    <td class="fw-medium">{{ crit }}</td>
                                     <td class="text-end fw-bold">{{ weight|floatformat:3 }}</td>
                                     <td>
-                                        <div class="progress" style="height: 20px;">
-                                            <div class="progress-bar bg-primary" 
-                                                 role="progressbar" 
-                                                 style="width: {{ weight|floatformat:3|multiply:100 }}%" 
-                                                 aria-valuenow="{{ weight|floatformat:3|multiply:100 }}" 
-                                                 aria-valuemin="0" 
-                                                 aria-valuemax="100">
+                                        <div class="d-flex align-items-center">
+                                            <div class="progress flex-grow-1" style="height: 20px; border-radius: 50rem;">
+                                                <div class="progress-bar bg-primary" 
+                                                     role="progressbar" 
+                                                     style="width: {{ weight|floatformat:3|multiply:100 }}%; border-radius: 50rem;" 
+                                                     aria-valuenow="{{ weight|floatformat:3|multiply:100 }}" 
+                                                     aria-valuemin="0" 
+                                                     aria-valuemax="100">
+                                                </div>
                                             </div>
+                                            <span class="ms-3 fw-medium">{{ weight|floatformat:3|multiply:100|floatformat:1 }}%</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -50,52 +96,69 @@
                     </div>
                 </div>
 
-                <div class="alert {% if results.consistency_ratio > 0.1 %}alert-warning{% else %}alert-info{% endif %} mb-5">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-{% if results.consistency_ratio > 0.1 %}exclamation-triangle{% else %}check-circle{% endif %} me-3 fs-4"></i>
+                <!-- Consistency Ratio Alert -->
+                <div class="alert {% if results.consistency_ratio > 0.1 %}alert-warning{% else %}alert-info{% endif %} d-flex align-items-center border-0 mb-5" style="border-radius: var(--border-radius);">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-{% if results.consistency_ratio > 0.1 %}exclamation-triangle{% else %}check-circle{% endif %}-fill fs-3 me-3"></i>
+                        </div>
                         <div>
-                            <h4 class="alert-heading">Ratio de Cohérence: {{ results.consistency_ratio|floatformat:3 }}</h4>
+                            <h4 class="alert-heading h5 mb-1">Ratio de Cohérence: {{ results.consistency_ratio|floatformat:3 }}</h4>
                             {% if results.consistency_ratio > 0.1 %}
-                            <p class="mb-0">Attention: Le ratio est supérieur à 0.1, ce qui indique une possible incohérence dans vos jugements.</p>
+                            <p class="mb-0">Attention: Le ratio est supérieur à 0.1, ce qui indique une possible incohérence dans vos jugements. Vous pourriez reconsidérer certaines comparaisons pour améliorer la fiabilité des résultats.</p>
                             {% else %}
-                            <p class="mb-0">Vos jugements sont cohérents (ratio ≤ 0.1).</p>
+                            <p class="mb-0">Vos jugements sont cohérents (ratio ≤ 0.1). Cela signifie que vos évaluations comparatives présentent un niveau acceptable de cohérence logique.</p>
                             {% endif %}
                         </div>
                     </div>
                 </div>
 
+                <!-- Alternatives Ranking Section -->
                 <div class="mb-5">
-                    <h3 class="h5 mb-3 text-primary">
-                        <i class="bi bi-trophy me-2"></i>Classement des Alternatives
-                    </h3>
+                    <div class="d-flex align-items-center mb-4">
+                        <span class="bg-secondary text-dark p-2 rounded-circle me-3">
+                            <i class="bi bi-trophy"></i>
+                        </span>
+                        <h3 class="h4 mb-0 fw-semibold">Classement des Alternatives</h3>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table table-hover">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="text-center">#</th>
-                                    <th>Alternative</th>
-                                    <th class="text-end">Score AHP</th>
-                                    <th class="text-center">Performance</th>
+                            <thead>
+                                <tr class="table-light">
+                                    <th class="text-center" style="width: 5%">#</th>
+                                    <th style="width: 40%">Alternative</th>
+                                    <th class="text-end" style="width: 15%">Score AHP</th>
+                                    <th>Performance</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for alt, score in results.ranked_alternatives %}
-                                <tr {% if forloop.first %}class="table-success"{% endif %}>
-                                    <td class="text-center fw-bold">{{ forloop.counter }}</td>
-                                    <td>{{ alt }}</td>
-                                    <td class="text-end">{{ score|floatformat:3 }}</td>
+                                <tr {% if forloop.first %}class="table-success bg-opacity-50"{% endif %}>
+                                    <td class="text-center">
+                                        {% if forloop.first %}
+                                        <span class="badge rounded-pill bg-success">1</span>
+                                        {% else %}
+                                        <span class="badge rounded-pill bg-secondary bg-opacity-50">{{ forloop.counter }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="fw-medium">
+                                        {% if forloop.first %}<i class="bi bi-star-fill text-warning me-2"></i>{% endif %}
+                                        {{ alt }}
+                                    </td>
+                                    <td class="text-end fw-bold">{{ score|floatformat:3 }}</td>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="progress flex-grow-1" style="height: 10px;">
-                                                <div class="progress-bar {% if forloop.first %}bg-success{% else %}bg-info{% endif %}" 
+                                            <div class="progress flex-grow-1" style="height: 12px; border-radius: 50rem;">
+                                                <div class="progress-bar {% if forloop.first %}bg-success{% else %}bg-secondary{% endif %}" 
                                                      role="progressbar" 
-                                                     style="width: {{ score|floatformat:3|multiply:100 }}%" 
+                                                     style="width: {{ score|floatformat:3|multiply:100 }}%; border-radius: 50rem;" 
                                                      aria-valuenow="{{ score|floatformat:3|multiply:100 }}" 
                                                      aria-valuemin="0" 
                                                      aria-valuemax="100">
                                                 </div>
                                             </div>
-                                            <span class="ms-2 small text-muted">{{ score|floatformat:3|multiply:100|floatformat:0 }}%</span>
+                                            <span class="ms-3 fw-medium">{{ score|floatformat:3|multiply:100|floatformat:1 }}%</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -105,33 +168,47 @@
                     </div>
                 </div>
 
-                <div class="card border-success mb-4">
-                    <div class="card-header bg-success text-white">
-                        <h4 class="mb-0">
-                            <i class="bi bi-award me-2"></i>Recommandation Optimale
+                <!-- Detailed Analysis Card -->
+                <div class="card border-0 bg-light mb-5">
+                    <div class="card-body p-4">
+                        <h4 class="h5 mb-3">
+                            <i class="bi bi-info-circle me-2 text-primary"></i>
+                            Interprétation des résultats
                         </h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <i class="bi bi-check-circle-fill text-success fs-1"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-4">
-                                <h3 class="h5">{{ results.best_choice.0 }}</h3>
-                                <p class="mb-2">Score AHP: <span class="badge bg-success">{{ results.best_choice.1|floatformat:3 }}</span></p>
-                                <p class="text-muted mb-0">Cette alternative présente le meilleur compromis selon vos critères et préférences.</p>
-                            </div>
-                        </div>
+                        <ul class="mb-0">
+                            <li class="mb-2">Les <strong>poids des critères</strong> représentent l'importance relative de chaque critère dans votre décision.</li>
+                            <li class="mb-2">Le <strong>ratio de cohérence</strong> mesure la logique interne de vos comparaisons par paires (valeur idéale ≤ 0.1).</li>
+                            <li class="mb-2">Les <strong>scores AHP</strong> indiquent la performance globale de chaque alternative, en tenant compte de tous les critères pondérés.</li>
+                            <li>La <strong>recommandation optimale</strong> est l'alternative ayant obtenu le score AHP le plus élevé.</li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="text-center mt-4">
-                    <a href="{% url 'home' %}" class="btn btn-primary px-4">
+                <!-- Action Buttons -->
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-5">
+                    <a href="{% url 'home' %}" class="btn btn-primary">
                         <i class="bi bi-house-door me-2"></i>Retour à l'accueil
                     </a>
+                    <button type="button" class="btn btn-outline-primary" onclick="window.print()">
+                        <i class="bi bi-printer me-2"></i>Imprimer les résultats
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    @media print {
+        .navbar, footer, .btn, nav.breadcrumb {
+            display: none !important;
+        }
+        .card {
+            box-shadow: none !important;
+        }
+        body {
+            background-color: white !important;
+        }
+    }
+</style>
 {% endblock %}

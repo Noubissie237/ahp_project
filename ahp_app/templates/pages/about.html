@@ -1,0 +1,270 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Système d'aide à la décision basé sur la méthode AHP (Analytic Hierarchy Process)">
+    <title>AHP System - Analytic Hierarchy Process</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy2k0rt5wxN-OxIZomwkiu4fTn7TGMR7_HXQ&s" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                    <i class="bi bi-diagram-3 me-2"></i>
+                    <span>AHP Decision System</span>
+                </a>
+                <div class="ms-auto d-none d-lg-block">
+                    <span class="text-light opacity-75">
+                        <i class="bi bi-lightbulb-fill me-1"></i>
+                        Décisions analytiques simplifiées
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-5 fade-in">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-xxl-10 col-xl-11 col-12">
+                    <div class="card shadow border-0">
+                        <div class="card-header bg-primary text-white py-4">
+                            <h1 class="h3 mb-0">
+                                <i class="bi bi-info-circle me-2"></i>À propos de la méthode AHP
+                            </h1>
+                            <p class="mb-0 mt-2 opacity-75">Découvrez le processus analytique hiérarchique</p>
+                        </div>
+                        
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <h2 class="h4 text-primary mb-3">
+                                            <i class="bi bi-question-circle me-2"></i>Qu'est-ce que l'AHP ?
+                                        </h2>
+                                        <p>
+                                            L'<strong>Analytic Hierarchy Process</strong> (AHP) est une méthode structurée pour organiser et analyser des décisions complexes, développée par Thomas Saaty dans les années 1970.
+                                        </p>
+                                        <div class="alert alert-info">
+                                            <p class="mb-0">
+                                                <i class="bi bi-lightbulb"></i> L'AHP décompose un problème en une hiérarchie d'éléments plus simples, puis utilise des comparaisons par paires pour établir des priorités.
+                                            </p>
+                                        </div>
+                                    </div>
+            
+                                    <div class="mb-5">
+                                        <h2 class="h4 text-primary mb-3">
+                                            <i class="bi bi-gear me-2"></i>Comment ça marche ?
+                                        </h2>
+                                        <ol class="list-group list-group-numbered">
+                                            <li class="list-group-item border-0 ps-0">
+                                                <strong>Définir la hiérarchie</strong> : Objectif → Critères → Alternatives
+                                            </li>
+                                            <li class="list-group-item border-0 ps-0">
+                                                <strong>Comparer par paires</strong> : Évaluer l'importance relative des éléments
+                                            </li>
+                                            <li class="list-group-item border-0 ps-0">
+                                                <strong>Calculer les priorités</strong> : Déterminer les poids de chaque élément
+                                            </li>
+                                            <li class="list-group-item border-0 ps-0">
+                                                <strong>Vérifier la cohérence</strong> : S'assurer de la logique des jugements
+                                            </li>
+                                            <li class="list-group-item border-0 ps-0">
+                                                <strong>Synthétiser les résultats</strong> : Obtenir le classement final
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+            
+                                <div class="col-md-6">
+                                    <div class="mb-5">
+                                        <h2 class="h4 text-primary mb-3">
+                                            <i class="bi bi-graph-up me-2"></i>Domaines d'application
+                                        </h2>
+                                        <div class="row">
+                                            <div class="col-6 mb-3">
+                                                <div class="card h-100 border-primary">
+                                                    <div class="card-body">
+                                                        <h3 class="h6 text-primary">
+                                                            <i class="bi bi-briefcase me-2"></i>Gestion
+                                                        </h3>
+                                                        <ul class="small">
+                                                            <li>Choix stratégiques</li>
+                                                            <li>Gestion de projets</li>
+                                                            <li>Allocation de ressources</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="card h-100 border-primary">
+                                                    <div class="card-body">
+                                                        <h3 class="h6 text-primary">
+                                                            <i class="bi bi-building me-2"></i>Industrie
+                                                        </h3>
+                                                        <ul class="small">
+                                                            <li>Sélection de fournisseurs</li>
+                                                            <li>Choix technologiques</li>
+                                                            <li>Localisation d'usines</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="card h-100 border-primary">
+                                                    <div class="card-body">
+                                                        <h3 class="h6 text-primary">
+                                                            <i class="bi bi-heart-pulse me-2"></i>Santé
+                                                        </h3>
+                                                        <ul class="small">
+                                                            <li>Priorisation de patients</li>
+                                                            <li>Choix thérapeutiques</li>
+                                                            <li>Évaluation de risques</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <div class="card h-100 border-primary">
+                                                    <div class="card-body">
+                                                        <h3 class="h6 text-primary">
+                                                            <i class="bi bi-tree me-2"></i>Environnement
+                                                        </h3>
+                                                        <ul class="small">
+                                                            <li>Gestion des risques</li>
+                                                            <li>Aménagement du territoire</li>
+                                                            <li>Choix énergétiques</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="mb-5">
+                                <h2 class="h4 text-primary mb-3">
+                                    <i class="bi bi-collection me-2"></i>Cas concrets d'utilisation
+                                </h2>
+                                <div class="accordion" id="casesAccordion">
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#case1">
+                                                <i class="bi bi-phone me-2"></i> Choix d'un smartphone
+                                            </button>
+                                        </h3>
+                                        <div id="case1" class="accordion-collapse collapse show" data-bs-parent="#casesAccordion">
+                                            <div class="accordion-body">
+                                                <p>Comparaison d'appareils selon :</p>
+                                                <ul>
+                                                    <li><strong>Prix</strong> (35% d'importance)</li>
+                                                    <li><strong>Performances</strong> (25%)</li>
+                                                    <li><strong>Autonomie</strong> (20%)</li>
+                                                    <li><strong>Marque</strong> (15%)</li>
+                                                    <li><strong>Design</strong> (5%)</li>
+                                                </ul>
+                                                <p class="mb-0">L'AHP permet d'objectiver ce choix subjectif en quantifiant les préférences.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#case2">
+                                                <i class="bi bi-bank me-2"></i> Sélection d'un investissement
+                                            </button>
+                                        </h3>
+                                        <div id="case2" class="accordion-collapse collapse" data-bs-parent="#casesAccordion">
+                                            <div class="accordion-body">
+                                                <p>Évaluation des options selon :</p>
+                                                <ul>
+                                                    <li>Rentabilité attendue</li>
+                                                    <li>Niveau de risque</li>
+                                                    <li>Durée de blocage</li>
+                                                    <li>Impact fiscal</li>
+                                                    <li>Alignement éthique</li>
+                                                </ul>
+                                                <p class="mb-0">L'AHP aide à concilier aspects quantitatifs et qualitatifs.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h3 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#case3">
+                                                <i class="bi bi-hospital me-2"></i> Priorisation de projets R&D
+                                            </button>
+                                        </h3>
+                                        <div id="case3" class="accordion-collapse collapse" data-bs-parent="#casesAccordion">
+                                            <div class="accordion-body">
+                                                <p>Critères d'évaluation :</p>
+                                                <ul>
+                                                    <li>Potentiel marché</li>
+                                                    <li>Faisabilité technique</li>
+                                                    <li>Coût de développement</li>
+                                                    <li>Avantage compétitif</li>
+                                                    <li>Alignement stratégique</li>
+                                                </ul>
+                                                <p class="mb-0">L'AHP permet d'allouer les ressources de façon rationnelle.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="alert alert-primary">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-book me-3 fs-3"></i>
+                                    <div>
+                                        <h3 class="h5 mb-2">Pour aller plus loin</h3>
+                                        <p class="mb-1">Saaty, T.L. (2008). <em>Decision making with the analytic hierarchy process.</em></p>
+                                        <p class="mb-0">Ishizaka, A., & Labib, A. (2011). <em>Review of the main developments in the analytic hierarchy process.</em></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 text-muted">
+                        <i class="bi bi-c-circle"></i> 2025 AHP System - Méthode d'Analyse Hiérarchique
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                    <a href="https://wa.me/message/5M3EXSM2BMNKD1" class="text-muted"><i class="bi bi-whatsapp"></i> Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple animation to enhance UX
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.animation = `fadeIn 0.5s ease-out ${index * 0.1}s forwards`;
+            });
+        });
+    </script>
+</body>
+</html>

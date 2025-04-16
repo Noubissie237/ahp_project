@@ -2,35 +2,77 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-lg-12">
-        <div class="card shadow border-0">
-            <div class="card-header bg-primary text-white py-3">
+    <div class="col-xl-9">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none"><i class="bi bi-house-door"></i> Accueil</a></li>
+                <li class="breadcrumb-item"><a href="javascript:history.back()" class="text-decoration-none">Comparaison des critères</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Évaluation des alternatives</li>
+            </ol>
+        </nav>
+        
+        <!-- Evaluation Card -->
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-gradient text-white py-4" style="background: linear-gradient(135deg, #3a5fa3 0%, #46a2d9 100%);">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h2 class="h4 mb-1">
-                            <i class="bi bi-clipboard2-data me-2"></i>Évaluation des Alternatives
+                        <h2 class="h3 mb-1 fw-bold text-success">
+                            <i class="bi bi-clipboard2-data me-2"></i>Évaluation des alternatives
                         </h2>
-                        <p class="small mb-0 opacity-75">Attribuez un score à chaque alternative selon les critères définis</p>
+                        <p class="mb-0 opacity-75 text-success">Attribuez un score à chaque alternative selon les critères définis</p>
                     </div>
-                    <span class="badge bg-white text-primary">Étape 3/3</span>
+                    <span class="badge bg-white text-secondary fw-semibold px-3 py-2 rounded-pill d-none d-md-inline-block">
+                        <i class="bi bi-check-circle me-1"></i>Étape 3/3
+                    </span>
                 </div>
             </div>
             
-            <div class="card-body p-4">
+            <div class="card-body p-4 p-lg-5">
+                <!-- Introduction -->
+                <div class="card border-0 bg-light mb-5">
+                    <div class="card-body p-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-info-circle-fill text-primary fs-4 me-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5 mb-2">Guide d'évaluation</h4>
+                                <p class="mb-0">Pour chaque alternative et chaque critère :</p>
+                                <ul class="mb-0">
+                                    <li>Attribuez un score entre 0 et 10 (0 = très mauvais, 10 = excellent)</li>
+                                    <li>Pour des critères quantitatifs comme le prix, saisissez la valeur réelle</li>
+                                    <li>Soyez cohérent dans votre échelle d'évaluation pour tous les critères</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-info-circle-fill text-warning fs-4 me-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5 mb-2 text-warning">Note</h4>
+                                <p class="mb-0" style="color: #999"><i>Le choix entre 0 et 10 est optionel, vous pouvez choisir plus (entre 0 et 50+)</i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="matrix_id" value="{{ matrix_id }}">
                     
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
+                    <div class="table-responsive mb-5">
+                        <table class="table table-hover align-middle shadow-sm">
+                            <thead class="bg-light">
                                 <tr>
-                                    <th style="width: 20%" class="align-middle">Alternative</th>
+                                    <th style="width: 20%" class="py-3">Alternative</th>
                                     {% for crit in criteria %}
-                                    <th class="text-center align-middle">
+                                    <th class="text-center align-middle py-3">
                                         <div class="d-flex flex-column">
                                             <span class="fw-semibold">{{ crit }}</span>
-                                            <small class="text-muted">Critère {{ forloop.counter }}</small>
                                         </div>
                                     </th>
                                     {% endfor %}
@@ -38,16 +80,21 @@
                             </thead>
                             <tbody>
                                 {% for alt in alternatives %}
-                                <tr>
-                                    <td class="fw-semibold align-middle">
-                                        <i class="bi bi-box-seam me-2 text-primary"></i>{{ alt }}
+                                <tr class="alt-row">
+                                    <td class="fw-semibold align-middle py-3">
+                                        <div class="d-flex align-items-center">
+                                            <span class="bg-light rounded-circle p-2 me-3">
+                                                <i class="bi bi-box-seam text-primary"></i>
+                                            </span>
+                                            <span>{{ alt }}</span>
+                                        </div>
                                     </td>
                                     {% for crit in criteria %}
-                                    <td class="text-center">
-                                        <div class="input-group input-group-sm">
+                                    <td class="text-center py-3">
+                                        <div class="input-group input-group-sm shadow-sm mx-auto" style="max-width: 120px;">
                                             <input type="number" 
                                                    name="score_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}"
-                                                   class="form-control text-center"
+                                                   class="form-control text-center score-input"
                                                    step="0.1"
                                                    min="0"
                                                    required
@@ -62,27 +109,81 @@
                         </table>
                     </div>
                     
-                    <div class="alert alert-info mt-4">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-info-circle-fill me-3 fs-4"></i>
+                    <!-- Tips Section -->
+                    <div class="alert alert-info border-0 mb-5" style="border-radius: var(--border-radius);">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-lightbulb-fill fs-4 me-3"></i>
+                            </div>
                             <div>
-                                <h5 class="alert-heading mb-2">Conseils</h5>
-                                <p class="mb-0">
-                                    Attribuez à chaque alternative un score entre 0 et 10 pour chaque critère.<br>
-                                    <strong>Exemple 1:</strong> Si l'alternative A est excellente pour le critère "Brand", donnez-lui un score élevé (8-10).<br>
-                                    Pour les critères "Prix/Price", attribuez le véritable prix.<br>
-                                    <strong>Exemple 2:</strong> Laptop DELL, 150000.<br>
-                                </p>
+                                <h4 class="alert-heading h5 mb-2">Conseils pour une évaluation efficace</h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <ul class="mb-md-0">
+                                            <li class="mb-1">Pour les critères positifs, un score plus élevé est meilleur</li>
+                                            <li class="mb-1">Pour les critères négatifs (coût, risque), un score plus bas est meilleur</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="mb-0">
+                                            <li class="mb-1">Évaluez avec objectivité en vous basant sur des faits</li>
+                                            <li>Considérez l'ensemble des caractéristiques pour chaque critère</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="d-flex justify-content-between mt-4">
+                    <!-- Examples Card -->
+                    <div class="card border-0 bg-light mb-5">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-3">
+                                <i class="bi bi-clipboard-check text-primary me-2"></i>Exemples d'évaluation
+                            </h5>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 shadow-sm border-0">
+                                        <div class="card-header bg-primary bg-opacity-10 py-2">
+                                            <h6 class="mb-0"><i class="bi bi-1-circle-fill me-2 text-primary"></i>Critère qualitatif</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                <strong>Pour le critère "Qualité" :</strong>
+                                                <ul class="mb-0">
+                                                    <li>Excellent : 8-10</li>
+                                                    <li>Bon : 6-7</li>
+                                                    <li>Moyen : 4-5</li>
+                                                    <li>Faible : 0-3</li>
+                                                </ul>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 shadow-sm border-0">
+                                        <div class="card-header bg-primary bg-opacity-10 py-2">
+                                            <h6 class="mb-0"><i class="bi bi-2-circle-fill me-2 text-primary"></i>Critère quantitatif</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text">
+                                                <strong>Pour le critère "Prix" :</strong><br>
+                                                Entrez le montant réel (par exemple : 150000 pour un laptop DELL à 150 000 F).
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-5">
                         <a href="javascript:history.back()" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left me-2"></i>Retour aux critères
                         </a>
-                        <button type="submit" class="btn btn-primary px-4">
-                            <i class="bi bi-graph-up me-2"></i>Voir les résultats
+                        <button type="submit" class="btn btn-primary px-5 py-2">
+                            <i class="bi bi-graph-up-arrow me-2"></i>Voir les résultats
                         </button>
                     </div>
                 </form>
@@ -92,18 +193,128 @@
 </div>
 
 <style>
-.input-group-sm .form-control {
-    padding: 0.25rem 0.5rem;
-    height: calc(1.5em + 0.5rem + 2px);
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes highlight {
+    0% { box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0); }
+    50% { box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25); }
+    100% { box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease;
+    border-radius: var(--border-radius);
+}
+
+.score-input {
+    transition: all 0.3s ease;
+    border-radius: var(--border-radius);
+    border: 1px solid #dee2e6;
+    height: 38px;
+}
+
+.score-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.15);
+    z-index: 5;
+}
+
+.score-input.is-valid {
+    animation: highlight 1s ease;
+}
+
+.table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table-hover tbody tr {
+    transition: all 0.2s ease;
 }
 
 .table-hover tbody tr:hover {
     background-color: rgba(78, 115, 223, 0.05);
 }
 
-.input-group-text {
-    min-width: 40px;
-    justify-content: center;
+.badge {
+    transition: all 0.3s ease;
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    box-shadow: 0 4px 6px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(var(--primary-color-rgb), 0.25);
+}
+
+.alert {
+    animation: fadeIn 0.5s ease;
+}
+
+.alt-row {
+    opacity: 0;
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate rows
+    const rows = document.querySelectorAll('.alt-row');
+    rows.forEach((row, index) => {
+        setTimeout(() => {
+            row.style.transition = 'opacity 0.5s ease';
+            row.style.opacity = '1';
+        }, 100 + (index * 100));
+    });
+    
+    // Validate inputs and animate
+    const inputs = document.querySelectorAll('.score-input');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.value && !isNaN(this.value)) {
+                this.classList.add('is-valid');
+                setTimeout(() => {
+                    this.classList.remove('is-valid');
+                }, 1000);
+            }
+        });
+    });
+    
+    // Keyboard navigation between cells
+    inputs.forEach((input, index) => {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === 'ArrowRight') {
+                e.preventDefault();
+                const nextInput = inputs[index + 1];
+                if (nextInput) nextInput.focus();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                const prevInput = inputs[index - 1];
+                if (prevInput) prevInput.focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                const rowSize = {{ criteria|length }};
+                const upInput = inputs[index - rowSize];
+                if (upInput) upInput.focus();
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                const rowSize = {{ criteria|length }};
+                const downInput = inputs[index + rowSize];
+                if (downInput) downInput.focus();
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

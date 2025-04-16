@@ -7,4 +7,5 @@ urlpatterns = [
     path('custom-mode/', views.CustomModeView.as_view(), name='custom_mode'),
     path('criteria-comparison/', views.CriteriaComparisonView.as_view(), name='criteria_comparison'),
     path('alternative-scores/', views.AlternativeScoresView.as_view(), name='alternative_scores'),
+    path('about/', views.about, name='about')
 ]

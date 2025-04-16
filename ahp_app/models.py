@@ -46,8 +46,8 @@ class CriteriaComparison(models.Model):
     )
     value = models.FloatField()
 
-    class Meta:
-        unique_together = ('matrix', 'criteria1', 'criteria2')
+    # class Meta:
+    #     unique_together = ('matrix', 'criteria1', 'criteria2')
 
 class AlternativeScore(models.Model):
     matrix = models.ForeignKey(ComparisonMatrix, on_delete=models.CASCADE)
@@ -55,5 +55,5 @@ class AlternativeScore(models.Model):
     criteria = models.ForeignKey(Criteria, on_delete=models.CASCADE)
     score = models.FloatField()
 
-    class Meta:
-        unique_together = ('matrix', 'alternative', 'criteria')
+    # class Meta:
+    #     unique_together = ('matrix', 'alternative', 'criteria')

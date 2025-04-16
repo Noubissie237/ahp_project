@@ -2,64 +2,154 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card shadow border-0">
-            <div class="card-header bg-primary text-white py-3">
-                <h2 class="h4 mb-0">
-                    <i class="bi bi-sliders me-2"></i>Mode Personnalisé - Configuration
-                </h2>
-                <p class="mb-0 small opacity-75">Définissez vos critères et alternatives</p>
+    <div class="col-xl-9">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none"><i class="bi bi-house-door"></i> Accueil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Configuration personnalisée</li>
+            </ol>
+        </nav>
+        
+        <!-- Configuration Card -->
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-gradient text-white py-4" style="background: linear-gradient(135deg, var(--secondary-color) 0%, #3ab8df 100%);">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h2 class="h3 mb-1 fw-bold text-success">
+                            <i class="bi bi-sliders me-2"></i>Configuration personnalisée
+                        </h2>
+                        <p class="mb-0 opacity-75 text-success">Définissez vos propres critères et alternatives</p>
+                    </div>
+                    <span class="badge bg-white text-secondary fw-semibold px-3 py-2 rounded-pill d-none d-md-inline-block">
+                        <i class="bi bi-gear-fill me-1"></i>Étape 1/3
+                    </span>
+                </div>
             </div>
             
-            <div class="card-body p-4">
-                <form method="post">
+            <div class="card-body p-4 p-lg-5">
+                <!-- Introduction -->
+                <div class="card border-0 bg-light mb-5">
+                    <div class="card-body p-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-info-circle-fill text-primary fs-4 me-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5 mb-2">Comment configurer votre analyse</h4>
+                                <ol class="mb-0">
+                                    <li class="mb-2">Définissez vos <strong>critères d'évaluation</strong> (ex: prix, qualité, performance).</li>
+                                    <li class="mb-2">Ajoutez les <strong>alternatives</strong> que vous souhaitez comparer.</li>
+                                    <li>Dans l'étape suivante, vous établirez l'importance relative des critères puis évaluerez chaque alternative.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post" id="config-form">
                     {% csrf_token %}
                     
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h3 class="h5 text-primary">
-                                <i class="bi bi-bar-chart-line me-2"></i>Critères d'évaluation
-                            </h3>
-                            <button type="button" id="add-criteria" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-plus-circle me-1"></i>Ajouter
-                            </button>
+                    <!-- Criteria Section -->
+                    <div class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <span class="bg-primary text-white p-2 rounded-circle me-3">
+                                <i class="bi bi-bar-chart-line"></i>
+                            </span>
+                            <h3 class="h4 mb-0 fw-semibold">Critères d'évaluation</h3>
                         </div>
                         
                         <div id="criteria-container" class="mb-3">
-                            <div class="input-group mb-2">
-                                <input type="text" name="criteria" class="form-control" placeholder="Ex: Prix, Performance, Qualité" required>
-                                <button type="button" class="btn btn-outline-danger remove-criteria">
+                            <div class="input-group mb-3 shadow-sm">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-1-circle text-primary"></i>
+                                </span>
+                                <input type="text" name="criteria" class="form-control border-start-0" placeholder="Ex: Prix" required>
+                                <button type="button" class="btn btn-outline-danger remove-item" title="Supprimer ce critère">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            <div class="input-group mb-3 shadow-sm">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-2-circle text-primary"></i>
+                                </span>
+                                <input type="text" name="criteria" class="form-control border-start-0" placeholder="Ex: Performance" required>
+                                <button type="button" class="btn btn-outline-danger remove-item" title="Supprimer ce critère">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
                         </div>
-                        <p class="small text-muted">Minimum 2 critères requis pour l'analyse AHP</p>
+                        
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="small text-muted mb-0"><i class="bi bi-asterisk text-danger me-1"></i>Minimum 2 critères requis</p>
+                            <button type="button" id="add-criteria" class="btn btn-sm btn-outline-primary px-3">
+                                <i class="bi bi-plus-circle me-2"></i>Ajouter un critère
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h3 class="h5 text-primary">
-                                <i class="bi bi-list-check me-2"></i>Alternatives à comparer
-                            </h3>
-                            <button type="button" id="add-alternative" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-plus-circle me-1"></i>Ajouter
-                            </button>
+                    <!-- Alternatives Section -->
+                    <div class="mb-5">
+                        <div class="d-flex align-items-center mb-4">
+                            <span class="bg-secondary text-dark p-2 rounded-circle me-3">
+                                <i class="bi bi-list-check"></i>
+                            </span>
+                            <h3 class="h4 mb-0 fw-semibold">Alternatives à comparer</h3>
                         </div>
                         
                         <div id="alternatives-container" class="mb-3">
-                            <div class="input-group mb-2">
-                                <input type="text" name="alternatives" class="form-control" placeholder="Ex: Option A, Solution B" required>
-                                <button type="button" class="btn btn-outline-danger remove-alternative">
+                            <div class="input-group mb-3 shadow-sm">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-1-circle text-secondary"></i>
+                                </span>
+                                <input type="text" name="alternatives" class="form-control border-start-0" placeholder="Ex: Option A" required>
+                                <button type="button" class="btn btn-outline-danger remove-item" title="Supprimer cette alternative">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            <div class="input-group mb-3 shadow-sm">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-2-circle text-secondary"></i>
+                                </span>
+                                <input type="text" name="alternatives" class="form-control border-start-0" placeholder="Ex: Option B" required>
+                                <button type="button" class="btn btn-outline-danger remove-item" title="Supprimer cette alternative">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
                         </div>
-                        <p class="small text-muted">Minimum 2 alternatives requis pour l'analyse</p>
+                        
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="small text-muted mb-0"><i class="bi bi-asterisk text-danger me-1"></i>Minimum 2 alternatives requises</p>
+                            <button type="button" id="add-alternative" class="btn btn-sm btn-outline-secondary px-3">
+                                <i class="bi bi-plus-circle me-2"></i>Ajouter une alternative
+                            </button>
+                        </div>
                     </div>
                     
-                    <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary py-2">
-                            <i class="bi bi-arrow-right-circle me-2"></i>Passer aux comparaisons
+                    <!-- Tips Section -->
+                    <div class="alert alert-info border-0 mb-5" style="border-radius: var(--border-radius);">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-lightbulb-fill fs-4 me-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="alert-heading h5 mb-2">Conseils pour une analyse efficace</h4>
+                                <ul class="mb-0">
+                                    <li class="mb-1">Limitez-vous à 5-7 critères pour maintenir la simplicité et la précision de l'analyse</li>
+                                    <li class="mb-1">Utilisez des critères indépendants les uns des autres pour éviter les redondances</li>
+                                    <li>Soyez précis dans la formulation de vos critères et alternatives</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-5">
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Retour
+                        </a>
+                        <button type="submit" class="btn btn-primary px-5 py-2">
+                            <i class="bi bi-arrow-right-circle me-2"></i>Continuer vers les comparaisons
                         </button>
                     </div>
                 </form>
@@ -70,51 +160,195 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    function addField(containerId, placeholder, name) {
+    // Counter for unique IDs
+    let criteriaCount = 2;
+    let alternativeCount = 2;
+    
+    // Add new field function
+    function addField(containerId, type) {
         const container = document.getElementById(containerId);
-        const newIndex = container.querySelectorAll('.input-group').length;
+        let count, icon, placeholder, name;
+        
+        if (type === 'criteria') {
+            criteriaCount++;
+            count = criteriaCount;
+            icon = 'bi-' + count + '-circle text-primary';
+            placeholder = 'Ex: Nouveau critère';
+            name = 'criteria';
+        } else {
+            alternativeCount++;
+            count = alternativeCount;
+            icon = 'bi-' + count + '-circle text-secondary';
+            placeholder = 'Ex: Nouvelle alternative';
+            name = 'alternatives';
+        }
         
         const newInput = document.createElement('div');
-        newInput.className = 'input-group mb-2';
+        newInput.className = 'input-group mb-3 shadow-sm';
         newInput.innerHTML = `
-            <input type="text" name="${name}" class="form-control" placeholder="${placeholder}" required>
-            <button type="button" class="btn btn-outline-danger remove-item">
+            <span class="input-group-text bg-white border-end-0">
+                <i class="${icon}"></i>
+            </span>
+            <input type="text" name="${name}" class="form-control border-start-0 new-item" placeholder="${placeholder}" required>
+            <button type="button" class="btn btn-outline-danger remove-item" title="Supprimer">
                 <i class="bi bi-trash"></i>
             </button>
         `;
+        
         container.appendChild(newInput);
+        
+        // Focus on the new input
+        setTimeout(() => {
+            const newItemInput = newInput.querySelector('.new-item');
+            newItemInput.focus();
+            newItemInput.classList.remove('new-item');
+        }, 50);
+        
+        // Animation
+        newInput.style.opacity = '0';
+        setTimeout(() => {
+            newInput.style.transition = 'opacity 0.3s ease';
+            newInput.style.opacity = '1';
+        }, 10);
+    }
+    
+    // Update numbering
+    function updateNumbering(containerId, type) {
+        const container = document.getElementById(containerId);
+        const items = container.querySelectorAll('.input-group');
+        
+        items.forEach((item, index) => {
+            const icon = item.querySelector('.input-group-text i');
+            icon.className = `bi bi-${index + 1}-circle ${type === 'criteria' ? 'text-primary' : 'text-secondary'}`;
+        });
+        
+        if (type === 'criteria') {
+            criteriaCount = items.length;
+        } else {
+            alternativeCount = items.length;
+        }
     }
 
+    // Add event listeners
+    document.getElementById('add-criteria').addEventListener('click', function() {
+        addField('criteria-container', 'criteria');
+    });
+    
+    document.getElementById('add-alternative').addEventListener('click', function() {
+        addField('alternatives-container', 'alternatives');
+    });
+    
+    // Event delegation for remove buttons
     document.addEventListener('click', function(e) {
-        if (e.target.closest('#add-criteria')) {
-            addField('criteria-container', 'Nouveau critère', 'criteria');
-        }
-        
-        if (e.target.closest('#add-alternative')) {
-            addField('alternatives-container', 'Nouvelle alternative', 'alternatives');
-        }
-        
         if (e.target.closest('.remove-item')) {
-            const container = e.target.closest('.input-group').parentElement;
-            if (container.querySelectorAll('.input-group').length > 1) {
-                e.target.closest('.input-group').remove();
+            const button = e.target.closest('.remove-item');
+            const inputGroup = button.closest('.input-group');
+            const container = inputGroup.parentElement;
+            const isCriteria = container.id === 'criteria-container';
+            
+            // Check minimum required
+            if (container.querySelectorAll('.input-group').length > 2) {
+                // Animation for removal
+                inputGroup.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                inputGroup.style.opacity = '0';
+                inputGroup.style.transform = 'translateX(10px)';
+                
+                setTimeout(() => {
+                    inputGroup.remove();
+                    updateNumbering(container.id, isCriteria ? 'criteria' : 'alternatives');
+                }, 300);
             } else {
-                const input = e.target.closest('.input-group').querySelector('input');
-                input.value = '';
-                input.focus();
+                // Shake animation for error
+                inputGroup.style.animation = 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both';
+                setTimeout(() => {
+                    inputGroup.style.animation = '';
+                }, 500);
+                
+                // Display a toast or alert
+                alert('Minimum 2 ' + (isCriteria ? 'critères' : 'alternatives') + ' requis');
             }
+        }
+    });
+    
+    // Form validation
+    document.getElementById('config-form').addEventListener('submit', function(e) {
+        const criteriaInputs = document.querySelectorAll('#criteria-container input');
+        const alternativeInputs = document.querySelectorAll('#alternatives-container input');
+        
+        let isValid = true;
+        const criteriaValues = new Set();
+        const alternativeValues = new Set();
+        
+        // Check for empty or duplicate criteria
+        criteriaInputs.forEach(input => {
+            const value = input.value.trim();
+            if (value === '') {
+                input.classList.add('is-invalid');
+                isValid = false;
+            } else if (criteriaValues.has(value.toLowerCase())) {
+                input.classList.add('is-invalid');
+                alert('Les critères doivent être uniques. "' + value + '" est dupliqué.');
+                isValid = false;
+            } else {
+                input.classList.remove('is-invalid');
+                criteriaValues.add(value.toLowerCase());
+            }
+        });
+        
+        // Check for empty or duplicate alternatives
+        alternativeInputs.forEach(input => {
+            const value = input.value.trim();
+            if (value === '') {
+                input.classList.add('is-invalid');
+                isValid = false;
+            } else if (alternativeValues.has(value.toLowerCase())) {
+                input.classList.add('is-invalid');
+                alert('Les alternatives doivent être uniques. "' + value + '" est dupliqué.');
+                isValid = false;
+            } else {
+                input.classList.remove('is-invalid');
+                alternativeValues.add(value.toLowerCase());
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
         }
     });
 });
 </script>
 
 <style>
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
 .input-group {
     transition: all 0.3s ease;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.input-group .form-control {
+    border-right: none;
+}
+
+.input-group .btn {
+    border-left: none;
+    z-index: 5;
 }
 
 .input-group:focus-within {
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+    box-shadow: 0 0 0 0.25rem rgba(var(--primary-color), 0.15);
 }
 
 .remove-item {
@@ -122,7 +356,16 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .remove-item:hover {
-    transform: scale(1.1);
+    background-color: #dc3545;
+    color: white;
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 </style>
 {% endblock %}

@@ -2,43 +2,80 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="card shadow border-0">
-            <div class="card-header bg-primary text-white py-3">
+    <div class="col-xl-9">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none"><i class="bi bi-house-door"></i> Accueil</a></li>
+                <li class="breadcrumb-item"><a href="javascript:history.back()" class="text-decoration-none">Configuration personnalisée</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Comparaison des critères</li>
+            </ol>
+        </nav>
+        
+        <!-- Comparison Card -->
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-gradient text-white py-4" style="background: linear-gradient(135deg, #4968a3 0%, #3ab8df 100%);">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h2 class="h4 mb-1">
+                        <h2 class="h3 mb-1 fw-bold text-success">
                             <i class="bi bi-compass me-2"></i>Comparaison par paires des critères
                         </h2>
-                        <p class="small mb-0 opacity-75">Évaluez l'importance relative entre chaque paire de critères</p>
+                        <p class="mb-0 opacity-75 text-success">Évaluez l'importance relative entre chaque paire de critères</p>
                     </div>
-                    <span class="badge bg-white text-primary">Étape 2/3</span>
+                    <span class="badge bg-white text-secondary fw-semibold px-3 py-2 rounded-pill d-none d-md-inline-block">
+                        <i class="bi bi-gear-fill me-1"></i>Étape 2/3
+                    </span>
                 </div>
             </div>
             
-            <div class="card-body p-4">
+            <div class="card-body p-4 p-lg-5">
                 {% if messages %}
-                <div class="mb-4">
+                <div class="mb-5">
                     {% for message in messages %}
-                    <div class="alert alert-danger d-flex align-items-center">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <div>{{ message }}</div>
+                    <div class="alert alert-danger border-0 d-flex" style="border-radius: var(--border-radius);">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="alert-heading h6 mb-1">Attention</h5>
+                            <p class="mb-0">{{ message }}</p>
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
                 {% endif %}
                 
+                <!-- Introduction -->
+                <div class="card border-0 bg-light mb-5">
+                    <div class="card-body p-4">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-info-circle-fill text-primary fs-4 me-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="h5 mb-2">Guide de comparaison</h4>
+                                <p class="mb-2">Pour chaque paire de critères, déterminez lequel est le plus important et à quel degré :</p>
+                                <ul class="mb-0">
+                                    <li>Valeur <strong>1</strong> : Les deux critères sont d'importance égale</li>
+                                    <li>Valeurs <strong>2 à 9</strong> : Le critère de gauche est plus important que celui de droite</li>
+                                    <li>Fractions <strong>1/2 à 1/9</strong> : Le critère de droite est plus important que celui de gauche</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <form method="post">
                     {% csrf_token %}
                     <input type="hidden" name="matrix_id" value="{{ matrix_id }}">
                     
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
+                    <div class="table-responsive mb-5">
+                        <table class="table table-hover align-middle shadow-sm">
+                            <thead class="bg-light">
                                 <tr>
-                                    <th style="width: 30%">Critère A</th>
-                                    <th style="width: 40%">Importance relative</th>
-                                    <th style="width: 30%">Critère B</th>
+                                    <th style="width: 30%" class="py-3">Critère A</th>
+                                    <th style="width: 40%" class="text-center py-3">Importance relative</th>
+                                    <th style="width: 30%" class="py-3">Critère B</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,10 +83,10 @@
                                     {% for crit2 in criteria %}
                                         {% if forloop.counter > forloop.parentloop.counter %}
                                         <tr>
-                                            <td class="fw-semibold text-end">{{ crit1 }}</td>
-                                            <td>
+                                            <td class="fw-semibold text-end py-3">{{ crit1 }}</td>
+                                            <td class="py-3">
                                                 <select name="compare_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" 
-                                                        class="form-select comparison-select" required>
+                                                        class="form-select comparison-select shadow-sm" required>
                                                     <option value="">Sélectionnez...</option>
                                                     
                                                     <optgroup label="{{ crit1 }} plus important que {{ crit2 }}">
@@ -76,7 +113,7 @@
                                                     </optgroup>
                                                 </select>
                                             </td>
-                                            <td class="fw-semibold">{{ crit2 }}</td>
+                                            <td class="fw-semibold py-3">{{ crit2 }}</td>
                                         </tr>
                                         {% endif %}
                                     {% endfor %}
@@ -85,41 +122,102 @@
                         </table>
                     </div>
                     
-                    <div class="d-flex justify-content-between mt-4">
+                    <!-- Tips Section -->
+                    <div class="alert alert-info border-0 mb-5" style="border-radius: var(--border-radius);">
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="bi bi-lightbulb-fill fs-4 me-3"></i>
+                            </div>
+                            <div>
+                                <h4 class="alert-heading h5 mb-2">Conseils pour des comparaisons cohérentes</h4>
+                                <ul class="mb-0">
+                                    <li class="mb-1">Comparez les critères deux à deux de manière indépendante</li>
+                                    <li class="mb-1">Si A est plus important que B et B est plus important que C, alors A devrait être plus important que C</li>
+                                    <li>Plus vous êtes cohérent, plus les résultats finaux seront précis et fiables</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mt-5">
                         <a href="javascript:history.back()" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left me-2"></i>Retour
                         </a>
-                        <button type="submit" class="btn btn-primary px-4">
-                            Continuer <i class="bi bi-arrow-right ms-2"></i>
+                        <button type="submit" class="btn btn-primary px-5 py-2">
+                            <i class="bi bi-arrow-right-circle me-2"></i>Continuer vers l'évaluation
                         </button>
                     </div>
                 </form>
             </div>
-            
-            <div class="card-footer bg-light">
-                <div class="row">
+        </div>
+        
+        <!-- Scale Explanation Card -->
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-light py-3">
+                <h5 class="mb-0 fw-semibold">
+                    <i class="bi bi-rulers me-2 text-secondary"></i>Échelle d'évaluation détaillée
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <h6 class="mb-2 text-primary">
-                            <i class="bi bi-info-circle me-2"></i>Guide d'évaluation
-                        </h6>
-                        <ul class="small text-muted">
-                            <li><strong>1</strong> : Importance égale</li>
-                            <li><strong>3</strong> : Légèrement plus important</li>
-                            <li><strong>5</strong> : Fortement plus important</li>
-                            <li><strong>7</strong> : Très fortement plus important</li>
-                            <li><strong>9</strong> : Absolument plus important</li>
-                            <li><strong>Valeurs intermédiaires</strong> : Lorsque vous hésitez entre deux niveaux</li>
-                        </ul>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-semibold">Valeur 1</h6>
+                                <p class="small text-muted mb-0">Les deux critères sont d'importance égale</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-semibold">Valeurs 2-3</h6>
+                                <p class="small text-muted mb-0">Importance modérée d'un critère par rapport à l'autre</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-semibold">Valeurs 4-5</h6>
+                                <p class="small text-muted mb-0">Importance forte d'un critère par rapport à l'autre</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
-                        <h6 class="mb-2 text-primary">
-                            <i class="bi bi-lightbulb me-2"></i>Conseils
-                        </h6>
-                        <ul class="small text-muted">
-                            <li>Comparez les critères deux à deux de manière indépendante</li>
-                            <li>Restez cohérent dans vos jugements</li>
-                            <li>Utilisez les valeurs intermédiaires si nécessaire</li>
-                        </ul>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-semibold">Valeurs 6-7</h6>
+                                <p class="small text-muted mb-0">Importance très forte d'un critère par rapport à l'autre</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-semibold">Valeurs 8-9</h6>
+                                <p class="small text-muted mb-0">Importance absolue d'un critère par rapport à l'autre</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-primary rounded-circle p-2"><i class="bi bi-check-lg"></i></span>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="fw-semibold">Valeurs fractionnaires (1/2 à 1/9)</h6>
+                                <p class="small text-muted mb-0">Lorsque le critère B est plus important que le critère A</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,18 +226,96 @@
 </div>
 
 <style>
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+.card {
+    animation: fadeIn 0.5s ease;
+    border-radius: var(--border-radius);
+}
+
 .comparison-select {
     transition: all 0.3s ease;
+    border-radius: var(--border-radius);
     border: 1px solid #dee2e6;
+    padding: 0.6rem;
 }
 
 .comparison-select:focus {
     border-color: #86b7fe;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+.table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table-hover tbody tr {
+    transition: all 0.2s ease;
 }
 
 .table-hover tbody tr:hover {
     background-color: rgba(78, 115, 223, 0.05);
 }
+
+.badge {
+    transition: all 0.3s ease;
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    box-shadow: 0 4px 6px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(var(--primary-color-rgb), 0.25);
+}
+
+.alert {
+    animation: fadeIn 0.5s ease;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add animation to table rows
+    const rows = document.querySelectorAll('tbody tr');
+    rows.forEach((row, index) => {
+        row.style.opacity = '0';
+        setTimeout(() => {
+            row.style.transition = 'opacity 0.3s ease';
+            row.style.opacity = '1';
+        }, 100 + (index * 50));
+    });
+    
+    // Highlight select on change
+    const selects = document.querySelectorAll('.comparison-select');
+    selects.forEach(select => {
+        select.addEventListener('change', function() {
+            if (this.value) {
+                this.classList.add('border-primary');
+                setTimeout(() => {
+                    this.classList.remove('border-primary');
+                }, 1000);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}

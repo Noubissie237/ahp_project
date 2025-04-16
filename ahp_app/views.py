@@ -172,3 +172,6 @@ class AlternativeScoresView(View):
         }
         
         return render(request, 'pages/results.html', context)
+    
+def about(request):
+    return render(request, 'pages/about.html')

@@ -2,46 +2,119 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card shadow-sm">
+    <div class="col-xl-10">
+        <!-- Hero Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold mb-3">Système d'Aide à la Décision AHP</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 600px;">
+                Prenez des décisions éclairées grâce à la méthode d'analyse hiérarchique des procédés (AHP).
+                Une approche scientifique pour hiérarchiser vos critères et alternatives.
+            </p>
+        </div>
+        
+        <!-- Main Card -->
+        <div class="card shadow mb-5">
             <div class="card-header bg-white border-0 text-center py-4">
-                <h2 class="fw-bold text-primary">
-                    <i class="bi bi-sliders me-2"></i>Système d'Aide à la Décision AHP
-                </h2>
-                <p class="lead text-muted mb-0">
-                    Choisissez votre mode d'analyse hiérarchique
+                <div class="d-inline-flex align-items-center justify-content-center mb-3">
+                    <span class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                        <i class="bi bi-sliders text-primary fs-3"></i>
+                    </span>
+                </div>
+                <h2 class="h3 fw-bold mb-2">Choisissez votre méthode d'analyse</h2>
+                <p class="text-muted mb-0">
+                    Sélectionnez le mode qui correspond le mieux à vos besoins d'analyse
                 </p>
             </div>
-            <div class="card-body p-5">
+            
+            <div class="card-body p-4 p-lg-5">
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <div class="h-100 p-4 bg-light rounded-3 border-start border-primary border-4">
-                            <h3 class="h4">
-                                <i class="bi bi-lightning-fill text-primary me-2"></i>
-                                Mode Rapide (TP 0)
-                            </h3>
-                            <p class="text-muted">
-                                Utilisez notre exemple préconfiguré pour choisir un téléphone portable.
-                            </p>
-                            <a href="{% url 'quick_mode' %}" class="btn btn-primary mt-3 px-4">
-                                <i class="bi bi-arrow-right me-2"></i>Commencer
-                            </a>
+                        <div class="card h-100 border-0 bg-gradient shadow-sm" style="background: linear-gradient(40deg, rgba(67, 97, 238, 0.03) 0%, rgba(67, 97, 238, 0.09) 100%);">
+                            <div class="card-body p-4 p-xl-5">
+                                <div class="d-flex align-items-center mb-4">
+                                    <span class="bg-primary text-white p-2 rounded-circle me-3">
+                                        <i class="bi bi-lightning-fill"></i>
+                                    </span>
+                                    <h3 class="h4 mb-0 fw-semibold">Mode Rapide (TP-0)</h3>
+                                </div>
+                                <p class="text-muted mb-4">
+                                    Utilisez notre exemple préconfiguré pour choisir un téléphone portable. 
+                                    
+                                </p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Exemple prédéfini</li>
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Résultats instantanés</li>
+                                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Interface guidée</li>
+                                </ul>
+                                <a href="{% url 'quick_mode' %}" class="btn btn-primary w-100 mt-3">
+                                    <i class="bi bi-arrow-right-circle me-2"></i>Démarrer en mode rapide
+                                </a>
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="col-md-6">
-                        <div class="h-100 p-4 bg-light rounded-3 border-start border-secondary border-4">
-                            <h3 class="h4">
-                                <i class="bi bi-gear-fill text-secondary me-2"></i>
-                                Mode Personnalisé
-                            </h3>
-                            <p class="text-muted">
-                                Créez votre propre analyse avec vos critères et alternatives.
-                            </p>
-                            <a href="{% url 'custom_mode' %}" class="btn btn-secondary mt-3 px-4">
-                                <i class="bi bi-arrow-right me-2"></i>Commencer
-                            </a>
+                        <div class="card h-100 border-0 bg-gradient shadow-sm" style="background: linear-gradient(40deg, rgba(76, 201, 240, 0.03) 0%, rgba(76, 201, 240, 0.09) 100%);">
+                            <div class="card-body p-4 p-xl-5">
+                                <div class="d-flex align-items-center mb-4">
+                                    <span class="bg-secondary text-dark p-2 rounded-circle me-3">
+                                        <i class="bi bi-gear-fill"></i>
+                                    </span>
+                                    <h3 class="h4 mb-0 fw-semibold">Mode Personnalisé</h3>
+                                </div>
+                                <p class="text-muted mb-4">
+                                    Créez votre propre analyse avec vos critères et alternatives spécifiques.
+                                    Pour les utilisateurs qui souhaitent appliquer l'AHP à leur contexte.
+                                </p>
+                                <ul class="list-unstyled mb-4">
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Critères personnalisables</li>
+                                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Alternatives illimitées</li>
+                                    <li><i class="bi bi-check-circle-fill text-success me-2"></i> Analyse complète</li>
+                                </ul>
+                                <a href="{% url 'custom_mode' %}" class="btn btn-secondary w-100 mt-3">
+                                    <i class="bi bi-sliders me-2"></i>Créer une analyse personnalisée
+                                </a>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-white text-center border-0 py-4">
+                <p class="text-muted mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    L'Analyse Hiérarchique des Procédés (AHP) est une technique structurée pour organiser et analyser des décisions complexes.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Feature Badges -->
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="mb-3">
+                        <i class="bi bi-graph-up text-primary fs-3"></i>
+                    </div>
+                    <h4 class="h5 fw-bold">Analyse fiable</h4>
+                    <p class="text-muted small">Basée sur des méthodes mathématiques éprouvées</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="mb-3">
+                        <i class="bi bi-shield-check text-primary fs-3"></i>
+                    </div>
+                    <h4 class="h5 fw-bold">Résultats précis</h4>
+                    <p class="text-muted small">Visualisation claire de la meilleure alternative</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3">
+                    <div class="mb-3">
+                        <i class="bi bi-lightbulb text-primary fs-3"></i>
+                    </div>
+                    <h4 class="h5 fw-bold">Interface intuitive</h4>
+                    <p class="text-muted small">Conçue pour simplifier les décisions complexes</p>
                 </div>
             </div>
         </div>
